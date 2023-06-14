@@ -1,4 +1,5 @@
 import { Button, Checkbox, Form, Input } from 'antd';
+import { goto } from '@/api';
 import titleLogo from '@/common/images/login/title_logo.png';
 import './login.less'
 
@@ -45,7 +46,7 @@ const LoginForm = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" style={{ width : '100%'}}>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }} onClick={() => { goto('/home') }}>
             Submit
           </Button>
         </Form.Item>
