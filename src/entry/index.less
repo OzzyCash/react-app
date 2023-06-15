@@ -1,10 +1,43 @@
-.M-entry{
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  .main-container{
-    position: relative;
-    flex: 1;
-  }
+.top-icon-div {
+  position: relative;
+  height: 52px;
+  border-bottom: 2px solid #00294e;
+  background: #001529;
+  z-index: 100;
 }
-
+.top-icon {
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  cursor: pointer;
+  line-height: 0;
+  transform: translateY(-50%) rotate(180deg);
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #2d8cf0;
+}
+.top-icon:hover {
+  background: #515a6e;
+}
+.top-icon:before {
+  content: "";
+  border: 5px solid transparent;
+  border-left-width: 8px;
+  border-left-color: #2d8cf0;
+  height: 0;
+  width: 0;
+  line-height: 0;
+  font-size: 0;
+  position: absolute;
+  left: 2px;
+  top: 0;
+}
+.top-icon-div .top-icon.rotate-icon {
+  transform: rotate(0deg) translateY(-50%);
+}
+.menu-icon {
+  transition: all 0.3s;
+}
+.ant-layout-sider-trigger{
+  display: none;
+}

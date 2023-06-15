@@ -1,27 +1,27 @@
-.M-header{
-  position: relative;
-  z-index: 999;
-  border-radius: 0;
-  overflow: hidden;
-  .header-wrapper {
+.header-wrapper {
+  display: flex ;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12.5px 15px;
+  background: #fff;
+  .logo-con {
+    display: flex;
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .opt-con {
     display: flex ;
-    .logo-con {
-      display: flex;
-      font-size: 30px;
-      font-weight: bold;
-    }
-    .opt-con {
-      display: flex ;
-      flex: 1 ;
-      justify-content: flex-end;
-      gap: 20px;
+    justify-content: flex-end;
+    gap: 20px;
+    .exit-con{
+      .ant-btn {
+        padding: 6px 15px;
+      }
+      .ant-btn.ant-btn-circle {
+        padding-inline-start: 8px
+      }
     }
   }
-}
-.ant-card-body{
-  padding: 16px 24px;
-  height: 62px;
-  line-height: 32px;
 }
 
 

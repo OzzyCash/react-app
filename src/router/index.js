@@ -22,7 +22,7 @@ export const globalRouters = createHashRouter([
       {
         // 如果URL没有"#路由"，跳转Home页面
         path: '/',
-        element: <Navigate to="/home" />,
+        element: <Navigate to="/login" />,
       },
       {
         // 未匹配，，跳转Login页面
