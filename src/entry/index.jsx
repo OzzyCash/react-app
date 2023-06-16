@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
@@ -57,10 +57,12 @@ const items = [
 const { Content, Sider } = Layout;
 
 function Entry() {
+  const location = useLocation()
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+  console.log(location);
   return (
     <Layout style={{height:'100%'}}>
       <Header />

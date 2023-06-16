@@ -1,6 +1,13 @@
 import { Button, Checkbox, Form, Input } from 'antd';
-import { goto } from '@/api';
+import { goto } from '@/api/request';
 import titleLogo from '@/common/images/login/title_logo.png';
+import {
+  LoginService_login,
+  UserManagerService_checkPassword,
+  UserManagerService_checkIfOnline,
+  UserManagerService_resetPwdBySelf,
+  UserManagerService_checkDeadline
+} from "@/api/index.js";
 import './login.less'
 
 
@@ -9,6 +16,16 @@ const LoginForm = () => {
   const onFinish = (values) => {
     console.log('Success:', values);
   };
+
+  const login = () => {
+    let params = {
+      userName: 'zhangshuhan'
+    }
+    UserManagerService_checkIfOnline(params).then(res => {
+      console.log(res);
+      goto('/home')
+    })
+  }
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -46,7 +63,7 @@ const LoginForm = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" style={{ width: '100%' }} onClick={() => { goto('/home') }}>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }} onClick={() => { login() }}>
             Submit
           </Button>
         </Form.Item>
