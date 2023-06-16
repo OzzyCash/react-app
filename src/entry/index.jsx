@@ -1,9 +1,11 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu } from 'antd';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import Header from '@/components/header'
 import './index.less'
+import { MenuManagerService_currentUserMenu } from '@/api/index.js'
+
 
 
 const items = [
@@ -57,12 +59,32 @@ const items = [
 const { Content, Sider } = Layout;
 
 function Entry() {
+
   const location = useLocation()
+
   const [collapsed, setCollapsed] = useState(false);
+
+  const [menuList, setMenuList] = useState([])
+
+
+  // 请求封装
+  const getList = () => {
+    MenuManagerService_currentUserMenu().then(res => {
+      console.log(res.data);
+      setMenuList(res.data);
+    })
+  }
+
+  // 请求列表数据  componentDidMount
+  useEffect(() => {
+    getList()
+  })
+
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
-  console.log(location);
+
+
   return (
     <Layout style={{height:'100%'}}>
       <Header />
@@ -72,7 +94,7 @@ function Entry() {
             <div className="top-icon-div">
               <a href="javascript:;" onClick={toggleCollapsed} className={collapsed ? 'top-icon menu-icon rotate-icon' : 'top-icon'}></a>
             </div>
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menuList} />
           </Sider>
           <Content>
             <Outlet />

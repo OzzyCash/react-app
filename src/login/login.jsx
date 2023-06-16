@@ -1,5 +1,9 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
+import { useDispatch } from 'react-redux'
+import { setToken } from '@/store/slices/common'
+import { useState } from 'react';
 import { goto } from '@/api/request';
+import cryptoJs from 'crypto-js';
 import titleLogo from '@/common/images/login/title_logo.png';
 import {
   LoginService_login,
@@ -13,17 +17,39 @@ import './login.less'
 
 
 const LoginForm = () => {
+  const dispatch = useDispatch()
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+
   const onFinish = (values) => {
     console.log('Success:', values);
   };
 
+  const error = (msg) => {
+    messageApi.open({
+      type: 'error',
+      content: msg,
+    });
+  };
+
   const login = () => {
-    let params = {
-      userName: 'zhangshuhan'
+    const key = cryptoJs.enc.Utf8.parse('SunmrmsService01')
+    const code = cryptoJs.enc.Utf8.parse(password)
+    const secret = cryptoJs.AES.encrypt(code, key, { mode: cryptoJs.mode.ECB, padding: cryptoJs.pad.Pkcs7 }).toString()
+    const params = {
+      userName: userName,
+      password: secret
     }
-    UserManagerService_checkIfOnline(params).then(res => {
-      console.log(res);
-      goto('/home')
+    LoginService_login(params).then(res => {
+      if(res.success){
+        dispatch(setToken(res.data.loginToken))
+        goto('/home')
+      }else{
+        error(res.msg)
+      }
     })
   }
 
@@ -32,6 +58,7 @@ const LoginForm = () => {
   };
   return (
     <>
+      {contextHolder}
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -47,7 +74,7 @@ const LoginForm = () => {
           name="username"
           rules={[{ required: true, message: 'Please input your username!' }]}
         >
-          <Input />
+          <Input value={userName} onChange={(e) => { setUserName(e.target.value) }} />
         </Form.Item>
 
         <Form.Item
@@ -55,7 +82,7 @@ const LoginForm = () => {
           name="password"
           rules={[{ required: true, message: 'Please input your password!' }]}
         >
-          <Input.Password />
+          <Input.Password value={password} onChange={(e) => { setPassword(e.target.value) }} />
         </Form.Item>
 
         <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
