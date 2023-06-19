@@ -1,107 +1,91 @@
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { PrivateRoute } from '@/router'
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { AppstoreOutlined } from '@ant-design/icons';
 import Header from '@/components/header'
 import './index.less'
 import { MenuManagerService_currentUserMenu } from '@/api/index.js'
 
-
-
-const items = [
-  {
-    label: 'Navigation One',
-    key: 'mail',
-    icon: <MailOutlined />,
-  },
-  {
-    label: 'Navigation Two',
-    key: 'app',
-    icon: <AppstoreOutlined />,
-    disabled: true,
-  },
-  {
-    label: 'Navigation Three - Submenu',
-    key: 'SubMenu',
-    icon: <SettingOutlined />,
-    children: [
-      {
-        type: 'group',
-        label: 'Item 1',
-        children: [
-          {
-            label: 'Option 1',
-            key: 'setting:1',
-          },
-          {
-            label: 'Option 2',
-            key: 'setting:2',
-          },
-        ],
-      },
-      {
-        type: 'group',
-        label: 'Item 2',
-        children: [
-          {
-            label: 'Option 3',
-            key: 'setting:3',
-          },
-          {
-            label: 'Option 4',
-            key: 'setting:4',
-          },
-        ],
-      },
-    ],
-  },
-];
 const { Content, Sider } = Layout;
 
 function Entry() {
 
-  const location = useLocation()
+  const navigate = useNavigate()
 
   const [collapsed, setCollapsed] = useState(false);
 
   const [menuList, setMenuList] = useState([])
 
+  const handleMenu = (data) => {
+    let result = [];
+    for(let i = 0, len = data.length; i < len; i++){
+      let item = {};
+      item = {
+        label: data[i].name,
+        key: data[i].id,
+        url: data[i].url,
+        type: data[i].type,
+      }
+      if (data[i].type === 'module'){
+        item.icon = <AppstoreOutlined />
+      }else{
+        item.icon = null;
+      }
+      if (data[i].submenu && data[i].submenu.length > 0) {
+        item.children = handleMenu(data[i].submenu);
+      } else {
+        item.children = null;
+      }
+      result.push(item);
+    }
+    return result;
+  }
 
   // 请求封装
   const getList = () => {
     MenuManagerService_currentUserMenu().then(res => {
-      console.log(res.data);
-      setMenuList(res.data);
+      // console.log(res.data);
+      let data = handleMenu(res.data)
+      setMenuList(data);
     })
   }
+  
 
   // 请求列表数据  componentDidMount
   useEffect(() => {
     getList()
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
+  const onClick = (e) => {
+    navigate(e.item.props.url)
+  }
+
 
   return (
-    <Layout style={{height:'100%'}}>
-      <Header />
-      <Content>
-        <Layout style={{ height: '100%' }}>
-          <Sider collapsible collapsed={collapsed} collapsedWidth="60" onCollapse={(value) => setCollapsed(value)}>
-            <div className="top-icon-div">
-              <a href="javascript:;" onClick={toggleCollapsed} className={collapsed ? 'top-icon menu-icon rotate-icon' : 'top-icon'}></a>
-            </div>
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menuList} />
-          </Sider>
-          <Content>
-            <Outlet />
-          </Content>
-        </Layout>
-      </Content>
-    </Layout>
+    <PrivateRoute>
+      <Layout style={{ height: '100%' }}>
+        <Header />
+        <Content>
+          <Layout style={{ height: '100%' }}>
+            <Sider collapsible collapsed={collapsed} collapsedWidth="60" onCollapse={(value) => setCollapsed(value)}>
+              <div className="top-icon-div">
+                <a href="javascript:;" onClick={toggleCollapsed} className={collapsed ? 'top-icon menu-icon rotate-icon' : 'top-icon'}></a>
+              </div>
+              <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menuList} onClick={onClick} />
+            </Sider>
+            <Content>
+              <Outlet />
+            </Content>
+          </Layout>
+        </Content>
+      </Layout>
+    </PrivateRoute>
   )
 }
 

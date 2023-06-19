@@ -1,7 +1,16 @@
 import { createHashRouter, Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Login from '../login/login'
 import Entry from '../entry/index'
-import Home from '../home/home'
+import baseRouterList from './base'
+
+
+// const routes = []
+// const files = require.context('./', true, /\.router\.js/)
+// files.keys().forEach(key => { 
+//   console.log(files);
+//   // routes.push(files(key).routerList)
+// })
 
 // 全局路由
 export const globalRouters = createHashRouter([
@@ -13,22 +22,17 @@ export const globalRouters = createHashRouter([
   {
     path: '/',
     element: ( <Entry /> ),
-    children: [
-      {
-        // 精确匹配"/home"，跳转Home页面
-        path: '/home',
-        element: <Home />,
-      },
-      {
-        // 如果URL没有"#路由"，跳转Home页面
-        path: '/',
-        element: <Navigate to="/login" />,
-      },
-      {
-        // 未匹配，，跳转Login页面
-        path: '*',
-        element: <Navigate to="/login" />,
-      },
-    ],
+    children: [...baseRouterList],
   },
 ])
+
+export function PrivateRoute(props) {
+  const common = useSelector((state) => state.common)
+  console.log(common);
+  // 判断localStorage是否有登录用户信息，如果没有则跳转登录页
+  return common.token ? (
+    props.children
+  ) : (
+    <Navigate to="/login" />
+  )
+}

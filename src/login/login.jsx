@@ -7,10 +7,10 @@ import cryptoJs from 'crypto-js';
 import titleLogo from '@/common/images/login/title_logo.png';
 import {
   LoginService_login,
-  UserManagerService_checkPassword,
-  UserManagerService_checkIfOnline,
-  UserManagerService_resetPwdBySelf,
-  UserManagerService_checkDeadline
+  // UserManagerService_checkPassword,
+  // UserManagerService_checkIfOnline,
+  // UserManagerService_resetPwdBySelf,
+  // UserManagerService_checkDeadline
 } from "@/api/index.js";
 import './login.less'
 
