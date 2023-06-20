@@ -43,3 +43,8 @@ export const MenuManagerService_currentOperationMap = () => {
 export const UserManagerService_getUserTaskProps = params => {
   return post({ ...createCAndM("UserManagerService", "getUserTaskProps"), params })
 };
+/************************************** 参数管理 **************************************/
+export const CodeManagerService_queryPage = (params) => {
+  return post({ ...createCAndM("CodeManagerService", "queryPage"), params });
+};
+

@@ -74,7 +74,7 @@ function Entry() {
           <Layout style={{ height: '100%' }}>
             <Sider collapsible collapsed={collapsed} collapsedWidth="60" onCollapse={(value) => setCollapsed(value)}>
               <div className="top-icon-div">
-                <a href="javascript:;" onClick={toggleCollapsed} className={collapsed ? 'top-icon menu-icon rotate-icon' : 'top-icon'}></a>
+                <div onClick={toggleCollapsed} className={collapsed ? 'top-icon menu-icon rotate-icon' : 'top-icon'}></div>
               </div>
               <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menuList} onClick={onClick} />
             </Sider>

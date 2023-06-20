@@ -5,12 +5,13 @@ import Entry from '../entry/index'
 import baseRouterList from './base'
 
 
-// const routes = []
-// const files = require.context('./', true, /\.router\.js/)
-// files.keys().forEach(key => { 
-//   console.log(files);
-//   // routes.push(files(key).routerList)
-// })
+const routes = []
+const files = require.context('./', true, /\.router\.js/)
+files.keys().forEach(key => {
+  files(key).default.forEach(ele => {
+    routes.push(ele)
+  })
+})
 
 // 全局路由
 export const globalRouters = createHashRouter([
@@ -22,7 +23,7 @@ export const globalRouters = createHashRouter([
   {
     path: '/',
     element: ( <Entry /> ),
-    children: [...baseRouterList],
+    children: [...baseRouterList,...routes],
   },
 ])
 
