@@ -55,7 +55,6 @@ function Entry() {
   // 请求列表数据  componentDidMount
   useEffect(() => {
     getList()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   const toggleCollapsed = () => {
