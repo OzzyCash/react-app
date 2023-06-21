@@ -76,7 +76,7 @@ function Entry() {
               <div className="top-icon-div">
                 <div onClick={toggleCollapsed} className={collapsed ? 'top-icon menu-icon rotate-icon' : 'top-icon'}></div>
               </div>
-              <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menuList} onClick={onClick} />
+              <Menu theme="dark" className='menu-box' defaultSelectedKeys={['1']} mode="inline" items={menuList} onClick={onClick} />
             </Sider>
             <Content>
               <Outlet />
